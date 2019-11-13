@@ -1,0 +1,51 @@
+version: '3.7'
+services:
+  elasticsearch:
+    image: registry.cn-beijing.aliyuncs.com/ssw-elk/elasticsearch:7.4.2
+    container_name: elasticsearch
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - cluster.initial_master_nodes=es01
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - 'data01:/usr/share/elasticsearch/data'
+      - './elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml'
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+  logstash:
+    image: registry.cn-beijing.aliyuncs.com/ssw-elk/logstash:7.4.2
+    container_name: logstash
+    volumes:
+      - './logstash/config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf'
+      - './logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml'
+    ports:
+      - 5044:5044
+      - 9600:9600
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+  kibana:
+    image: registry.cn-beijing.aliyuncs.com/ssw-elk/kibana:7.4.2
+    container_name: kibana
+    volumes:
+      - './kibana/config:/usr/share/kibana/config'
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+volumes:
+  data01:
+    driver: local
+
+networks:
+  elastic:
+    ipam:
+      driver: default
+      config:
+      - subnet: "172.126.0.0/16"
