@@ -51,4 +51,4 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: "172.21.19.0/16"
+      - subnet: "172.21.19.0/24"
