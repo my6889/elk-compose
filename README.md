@@ -81,7 +81,7 @@ rm -r elk-compose
 
 ## 项目说明
 
-* 所有ELK组件使用官方的7.4.2版本
+* 所有ELK组件使用官方的7.8.0版本
 * 项目中的三个文件夹中的配置会挂载到容器中
 * ES的数据卷挂载到了volume，可以通过`docker volume ls`命令看到
 * `ES_JAVA_OPTS`默认设置为`-Xms1024m -Xmx1024m`，可按需修改

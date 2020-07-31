@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   elasticsearch:
-    image: registry.cn-beijing.aliyuncs.com/ssw-elk/elasticsearch:7.4.2
+    image: elasticsearch:7.8.0
     container_name: elasticsearch
     environment:
       - node.name=es01
@@ -17,7 +17,7 @@ services:
     networks:
       - elastic
   logstash:
-    image: registry.cn-beijing.aliyuncs.com/ssw-elk/logstash:7.4.2
+    image: logstash:7.8.0
     container_name: logstash
     volumes:
       - './logstash/config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf'
@@ -31,7 +31,7 @@ services:
     depends_on:
       - elasticsearch
   kibana:
-    image: registry.cn-beijing.aliyuncs.com/ssw-elk/kibana:7.4.2
+    image: kibana:7.8.0
     container_name: kibana
     volumes:
       - './kibana/config:/usr/share/kibana/config'
