@@ -23,12 +23,12 @@ echo vm.max_map_count=655360 >> /etc/sysctl.conf
 sysctl -p
 ```
 
-**第一次启动**
+**先启动elasticsearch**
 
 ```
 cd elk-compose
-docker-compose up
-# 此时可以先忽略kibana、logstash连接ES的一些报错信息，然后再打开一个窗口设置认证密码。
+docker-compose up -d elasticsearch
+# 此时先启动elasticsearch，然后设置认证密码。
 ```
 
 **设置认证密码**
@@ -41,12 +41,14 @@ docker exec -ti elasticsearch /usr/share/elasticsearch/bin/elasticsearch-setup-p
 **修改kibana配置中的密码**
 
 ```
+# 修改配置中的密码为刚才设置的密码
 sed -i "s/123456/yourpassword/g" kibana/config/kibana.yml
 ```
 
 **修改logstash配置中的密码**
 
 ```
+# 修改配置中的密码为刚才设置的密码
 sed -i "s/123456/yourpassword/g" logstash/config/logstash.conf
 sed -i "s/123456/yourpassword/g" logstash/config/logstash.yml
 ```
@@ -57,10 +59,11 @@ sed -i "s/123456/yourpassword/g" logstash/config/logstash.yml
 vim logstash/config/logstash.conf
 ```
 
-**重新创建容器**
+**启动所有容器**
 
 ```
-docker-compose down && docker-compose up -d 
+docker-compose up -d
+# 刚才Elasticsearch已经启动，执行此命令后会把Logstash和Kibana容器也启动。
 ```
 
 **访问服务**
