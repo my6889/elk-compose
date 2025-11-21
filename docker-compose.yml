@@ -1,15 +1,19 @@
 version: '3.7'
 services:
   elasticsearch:
-    image: elasticsearch:7.8.0
+    image: elasticsearch:7.17.1
     container_name: elasticsearch
     environment:
       - node.name=es01
       - cluster.name=es-docker-cluster
       - cluster.initial_master_nodes=es01
       - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     volumes:
-      - 'data01:/usr/share/elasticsearch/data'
+      - './elasticsearch/data:/usr/share/elasticsearch/data'
       - './elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml'
     ports:
       - 9200:9200
@@ -17,7 +21,7 @@ services:
     networks:
       - elastic
   logstash:
-    image: logstash:7.8.0
+    image: logstash:7.17.1
     container_name: logstash
     volumes:
       - './logstash/config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf'
@@ -31,10 +35,11 @@ services:
     depends_on:
       - elasticsearch
   kibana:
-    image: kibana:7.8.0
+    image: kibana:7.17.1
     container_name: kibana
     volumes:
       - './kibana/config:/usr/share/kibana/config'
+      - ./kibana/data:/usr/share/kibana/data
     ports:
       - 5601:5601
     restart: always
@@ -42,9 +47,6 @@ services:
       - elastic
     depends_on:
       - elasticsearch
-volumes:
-  data01:
-    driver: local
 
 networks:
   elastic:
