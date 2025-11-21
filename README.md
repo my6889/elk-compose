@@ -29,7 +29,6 @@ cd elk-compose
 docker-compose up -d elasticsearch
 # 此时先启动elasticsearch，然后设置认证密码。
 ```
-如果容器无法启动，提示目录权限问题，请调整持久化的data目录的权限。
 
 **设置认证密码**
 
@@ -42,21 +41,21 @@ docker exec -ti elasticsearch /usr/share/elasticsearch/bin/elasticsearch-setup-p
 
 ```
 # 修改配置中的密码为刚才设置的密码
-sed -i "s/123456/yourpassword/g" kibana/config/kibana.yml
+sed -i "s/123456/yourpassword/g" kibana_config/kibana.yml
 ```
 
 **修改logstash配置中的密码**
 
 ```
 # 修改配置中的密码为刚才设置的密码
-sed -i "s/123456/yourpassword/g" logstash/config/logstash.conf
-sed -i "s/123456/yourpassword/g" logstash/config/logstash.yml
+sed -i "s/123456/yourpassword/g" logstash_config/logstash.conf
+sed -i "s/123456/yourpassword/g" logstash_config/logstash.yml
 ```
 
 **修改Logstash输入输出规则**（选做）
 
 ```
-vim logstash/config/logstash.conf
+vim logstash_config/logstash.conf
 ```
 
 **启动所有容器**
@@ -79,3 +78,5 @@ http://宿主机IP:5601
 * 所有ELK组件使用官方的7.17.1版本
 * 项目中的三个文件夹中的配置会挂载到容器中
 * `ES_JAVA_OPTS`默认设置为`-Xms1024m -Xmx1024m`，可按需修改
+* 如果容器无法启动，提示目录权限问题，请调整容器数据持久化目录的权限
+

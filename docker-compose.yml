@@ -13,8 +13,8 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - './elasticsearch/data:/usr/share/elasticsearch/data'
-      - './elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml'
+      - './elasticsearch_data:/usr/share/elasticsearch/data'
+      - './elasticsearch_config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml'
     ports:
       - 9200:9200
     restart: always
@@ -24,8 +24,8 @@ services:
     image: logstash:7.17.1
     container_name: logstash
     volumes:
-      - './logstash/config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf'
-      - './logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml'
+      - './logstash_config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf'
+      - './logstash_config/logstash.yml:/usr/share/logstash/config/logstash.yml'
     ports:
       - 5044:5044
       - 9600:9600
@@ -38,8 +38,8 @@ services:
     image: kibana:7.17.1
     container_name: kibana
     volumes:
-      - './kibana/config:/usr/share/kibana/config'
-      - './kibana/data:/usr/share/kibana/data'
+      - './kibana_config:/usr/share/kibana/config'
+      - './kibana_data:/usr/share/kibana/data'
     ports:
       - 5601:5601
     restart: always
