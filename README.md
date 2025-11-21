@@ -29,6 +29,7 @@ cd elk-compose
 docker-compose up -d elasticsearch
 # 此时先启动elasticsearch，然后设置认证密码。
 ```
+如果容器无法启动，提示目录权限问题，请调整持久化的data目录的权限。
 
 **设置认证密码**
 
